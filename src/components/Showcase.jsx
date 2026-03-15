@@ -9,6 +9,8 @@ const Showcase = () => {
 
   useGSAP(() => {
     if (!isTablet) {
+      gsap.set(".content", { opacity: 0, y: 50 });
+
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: "#showcase",
