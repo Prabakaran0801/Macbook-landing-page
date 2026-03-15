@@ -42,7 +42,7 @@ const Highlights = () => {
           <div className="apple-gradient">
             <img src="/ai.png" alt="AI" />
             <p>
-              Build for <br /> <sapn>Apple Intelligence </sapn>
+              Build for <br /> <span>Apple Intelligence </span>
             </p>
           </div>
           <div>

@@ -2,12 +2,7 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  performanceImages,
-  performanceImgPositions,
-  performanceImgPositionsTablet,
-  performanceImgPositionsMobile,
-} from "../constants";
+import { performanceImages, performanceImgPositions } from "../constants";
 import { useMediaQuery } from "react-responsive";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -41,14 +36,14 @@ const Performance = () => {
       );
 
       // Determine positions based on device
-      let positions;
-      if (isMobile) {
-        positions = performanceImgPositionsMobile;
-      } else if (isTablet) {
-        positions = performanceImgPositionsTablet;
-      } else {
-        positions = performanceImgPositions;
-      }
+      // let positions;
+      // if (isMobile) {
+      //   positions = performanceImgPositionsMobile;
+      // } else if (isTablet) {
+      //   positions = performanceImgPositionsTablet;
+      // } else {
+      //   positions = performanceImgPositions;
+      // }
 
       // Create scrubbed timeline
       const tl = gsap.timeline({
@@ -63,7 +58,7 @@ const Performance = () => {
       });
 
       // Animate images to their positions at time 0 (skip p5)
-      positions.forEach((pos) => {
+      performanceImgPositions.forEach((pos) => {
         if (pos.id === "p5") return;
         const target = {};
         if (pos.left !== undefined) target.left = `${pos.left}%`;
