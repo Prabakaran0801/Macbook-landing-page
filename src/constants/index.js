@@ -74,6 +74,82 @@ const performanceImgPositions = [
   },
 ];
 
+const performanceImgPositionsTablet = [
+  {
+    id: "p1",
+    left: 5,
+    bottom: 62,
+  },
+  {
+    id: "p2",
+    right: 8,
+    bottom: 57,
+  },
+  {
+    id: "p3",
+    right: 2,
+    bottom: 42,
+  },
+  {
+    id: "p4",
+    right: 0,
+    bottom: 7,
+  },
+  {
+    id: "p5",
+    left: 15,
+    bottom: 47,
+  },
+  {
+    id: "p6",
+    left: 2,
+    bottom: 27,
+  },
+  {
+    id: "p7",
+    left: 0,
+    bottom: 7,
+  },
+];
+
+const performanceImgPositionsMobile = [
+  {
+    id: "p1",
+    left: 5,
+    bottom: 70,
+  },
+  {
+    id: "p2",
+    right: 5,
+    bottom: 65,
+  },
+  {
+    id: "p3",
+    right: 2,
+    bottom: 50,
+  },
+  {
+    id: "p4",
+    right: 1,
+    bottom: 10,
+  },
+  {
+    id: "p5",
+    left: 10,
+    bottom: 55,
+  },
+  {
+    id: "p6",
+    left: 2,
+    bottom: 35,
+  },
+  {
+    id: "p7",
+    left: 1,
+    bottom: 10,
+  },
+];
+
 const features = [
   {
     id: 1,
@@ -136,4 +212,6 @@ export {
   noChangeParts,
   performanceImages,
   performanceImgPositions,
+  performanceImgPositionsTablet,
+  performanceImgPositionsMobile,
 };

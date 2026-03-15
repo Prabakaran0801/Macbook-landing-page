@@ -2,13 +2,21 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { performanceImages, performanceImgPositions } from "../constants";
+import {
+  performanceImages,
+  performanceImgPositions,
+  performanceImgPositionsTablet,
+  performanceImgPositionsMobile,
+} from "../constants";
 import { useMediaQuery } from "react-responsive";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Performance = () => {
-  const isMobile = useMediaQuery({ query: "(max-width:1024px)" });
+  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
+  const isTablet = useMediaQuery({
+    query: "(min-width:769px) and (max-width:1024px)",
+  });
   const sectionRef = useRef();
 
   useGSAP(
@@ -31,9 +39,16 @@ const Performance = () => {
           },
         },
       );
-      if (isMobile) return;
 
-      // Image animations for desktop
+      // Determine positions based on device
+      let positions;
+      if (isMobile) {
+        positions = performanceImgPositionsMobile;
+      } else if (isTablet) {
+        positions = performanceImgPositionsTablet;
+      } else {
+        positions = performanceImgPositions;
+      }
 
       // Create scrubbed timeline
       const tl = gsap.timeline({
@@ -48,7 +63,7 @@ const Performance = () => {
       });
 
       // Animate images to their positions at time 0 (skip p5)
-      performanceImgPositions.forEach((pos) => {
+      positions.forEach((pos) => {
         if (pos.id === "p5") return;
         const target = {};
         if (pos.left !== undefined) target.left = `${pos.left}%`;
@@ -58,7 +73,7 @@ const Performance = () => {
         tl.to(`.${pos.id}`, target, 0);
       });
     },
-    { scope: sectionRef, dependencies: [isMobile] },
+    { scope: sectionRef, dependencies: [isMobile, isTablet] },
   );
 
   return (
@@ -67,7 +82,7 @@ const Performance = () => {
 
       <div className="wrapper">
         {performanceImages.map(({ src, id }) => (
-          <img key={id} src={src} alt={id || ""} className={id} />
+          <img key={id} src={src} alt={id} className={id} />
         ))}
       </div>
       <div className="content">
@@ -75,11 +90,13 @@ const Performance = () => {
           Run graphics-intensive workflows with a responsiveness that keeps up
           with your imagination. The M4 family of chips features a GPU with a
           second-generation hardware- accelerated ray tracing engine that
-          renders images faster, so {""}
+          renders images faster, so
+          {""}
           <span className="text-white">
-            gaming feels more immersive and realistic than ever.
+            gaming feels more immersive and realistic than ever.{" "}
           </span>
-          {""} And Dynamic Caching optimizes fast on-chip memory to dramatically
+          {""}
+          And Dynamic Caching optimizes fast on-chip memory to dramatically
           increase average GPU utilization-driving a huge performance boost for
           the most demanding pro apps and games.
         </p>
