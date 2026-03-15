@@ -1,30 +1,29 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { performanceImages, performanceImgPositions } from "../constants";
+import { gsap } from "gsap";
+import {
+  performanceImages,
+  performanceImgPositions,
+} from "../constants/index.js";
 import { useMediaQuery } from "react-responsive";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Performance = () => {
-  const isMobile = useMediaQuery({ query: "(max-width:768px)" });
-  const isTablet = useMediaQuery({
-    query: "(min-width:769px) and (max-width:1024px)",
-  });
-  const sectionRef = useRef();
+  const isMobile = useMediaQuery({ query: "(max-width: 1024px)" });
+  const sectionRef = useRef(null);
 
   useGSAP(
     () => {
-      // Text animation
+      const sectionEl = sectionRef.current;
+      if (!sectionEl) return;
+
+      // Text Animation
       gsap.fromTo(
         ".content p",
         { opacity: 0, y: 10 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          ease: "power2.out ",
+          ease: "power1.out",
           scrollTrigger: {
             trigger: ".content p",
             start: "top bottom",
@@ -35,40 +34,37 @@ const Performance = () => {
         },
       );
 
-      // Determine positions based on device
-      // let positions;
-      // if (isMobile) {
-      //   positions = performanceImgPositionsMobile;
-      // } else if (isTablet) {
-      //   positions = performanceImgPositionsTablet;
-      // } else {
-      //   positions = performanceImgPositions;
-      // }
+      if (isMobile) return;
 
-      // Create scrubbed timeline
+      // Image Positioning Timeline
       const tl = gsap.timeline({
-        defaults: { ease: "power1.inOut", duration: 2, overwrite: "auto" },
+        defaults: { duration: 2, ease: "power1.inOut", overwrite: "auto" },
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: sectionEl,
           start: "top bottom",
-          end: "center center",
+          end: "bottom top",
           scrub: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      // Animate images to their positions at time 0 (skip p5)
-      performanceImgPositions.forEach((pos) => {
-        if (pos.id === "p5") return;
-        const target = {};
-        if (pos.left !== undefined) target.left = `${pos.left}%`;
-        if (pos.right !== undefined) target.right = `${pos.right}%`;
-        if (pos.bottom !== undefined) target.bottom = `${pos.bottom}%`;
-        if (pos.transform !== undefined) target.transform = pos.transform;
-        tl.to(`.${pos.id}`, target, 0);
+      // Position Each Performance Image
+      performanceImgPositions.forEach((item) => {
+        if (item.id === "p5") return;
+
+        const selector = `.${item.id}`;
+        const vars = {};
+
+        if (typeof item.left === "number") vars.left = `${item.left}%`;
+        if (typeof item.right === "number") vars.right = `${item.right}%`;
+        if (typeof item.bottom === "number") vars.bottom = `${item.bottom}%`;
+
+        if (item.transform) vars.transform = item.transform;
+
+        tl.to(selector, vars, 0);
       });
     },
-    { scope: sectionRef, dependencies: [isMobile, isTablet] },
+    { scope: sectionRef, dependencies: [isMobile] },
   );
 
   return (
@@ -76,32 +72,31 @@ const Performance = () => {
       <h2>Next-level graphics performance. Game on.</h2>
 
       <div className="wrapper">
-        {performanceImages.map(({ src, index, id, alt }) => (
+        {performanceImages.map((item, index) => (
           <img
             key={index}
-            src={src}
-            alt={alt || `Performance Image ${index + 1}`}
-            className={id}
+            src={item.src}
+            className={item.id}
+            alt={item.alt || `Performance Image #${index + 1}`}
           />
         ))}
       </div>
+
       <div className="content">
         <p>
           Run graphics-intensive workflows with a responsiveness that keeps up
           with your imagination. The M4 family of chips features a GPU with a
-          second-generation hardware- accelerated ray tracing engine that
-          renders images faster, so{" "}
+          second-generation hardware-accelerated ray tracing engine that renders
+          images faster, so{" "}
           <span className="text-white">
-            gaming feels more immersive and realistic than ever.{" "}
-          </span>
-          {"  "}
+            gaming feels more immersive and realistic than ever.
+          </span>{" "}
           And Dynamic Caching optimizes fast on-chip memory to dramatically
-          increase average GPU utilization-driving a huge performance boost for
-          the most demanding pro apps and games.
+          increase average GPU utilization — driving a huge performance boost
+          for the most demanding pro apps and games.
         </p>
       </div>
     </section>
   );
 };
-
 export default Performance;
