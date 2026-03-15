@@ -181,7 +181,7 @@ body {
   }
 
   #showcase {
-    @apply relative min-h-screen;
+    @apply relative;
 
     .media {
       @apply relative lg:overflow-hidden;
